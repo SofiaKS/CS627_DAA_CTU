@@ -4,45 +4,39 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-public class ReverseArray_InPlace {
+public class ReverseArray_InPlace_Recursive {
 
-    //this program reverses an array of integer values
-    //this program contains a counter to count the number of steps required for each iteration.
+    //this program reverses an array of integer values in a recursive manner
     //The total number of steps will always be total size of an array divided by 2 (arr.length()/2)
     // Every iteration will make exactly one step to swap the positions from beginning and the end.
-    static void reverseArray(int arr[], int n) {
 
-        // initialize temp and count variables:
-        // temp is a temporary placeholder for a value to be swapped
-        // count is to count the number of swaps performed at each iteration
-        int temp, count;
+    static void reverseArray(int arr[], int i) {
 
-        //divide total length of an array by two
-        //iterate through elements 1 to the middle
-
-        for (int i = 0; i < n / 2; i++) {
-            //at every iteration, the count should be reset
-            count = 0;
-            //store the value to be swapped in a temporary position to vacate the place of array in position i for the element from the end of the list in the posision n-1-i
-            temp = arr[i];
-            //swap the element in position i with the element in position arr.length()-i-1 from the end.
-            arr[i] = arr[n - i - 1];
-            //instead assign a value which is store in a temporary placeholder. Operation complete.
-            arr[n - i - 1] = temp;
-            //increment the count (will always be equal to 1)
-        //    count++;
-            //Print the total length of the array (axis x) and count taken to perform this step (axis y)
-         //   System.out.printf("(" + n + "," + count + ("),\n"));
+        //Will swap first half of the array with the second half. Will call itself until reached the middle of the array
+        if (i != arr.length / 2) {
+            swapMethod(arr, i, arr.length - i - 1);
+            reverseArray(arr, i + 1);
+        } else {
+            //Print out the reversed array and exit
+            System.out.println("Array after reversal: \n" + Arrays.toString(arr) + " \n Steps: " + i);
+            return;
         }
+    }
 
-        //print the same array after reversal
-        System.out.println("Array after reversal: \n" + Arrays.toString(arr));
+    static void swapMethod(int arr[], int i, int j) {
 
+        int temp;
+        //store the value to be swapped in a temporary position to vacate the place of array in position i for the element from the end of the list in the position n-1-i (j)
+        temp = arr[i];
+        //swap the element in position i with the element in position arr.length()-i-1 from the end.
+        arr[i] = arr[j];
+        //assign a value which is store in a temporary placeholder. Operation complete.
+        arr[j] = temp;
     }
 
     public static void main(String[] args) {
         //this is a code to generate integer values for the array of size n (custom).
-        int n = 1500;
+        int n = 10500;
 
         Random random = new Random();
 
@@ -51,7 +45,7 @@ public class ReverseArray_InPlace {
         System.out.println("Array before reversal: \n" + Arrays.toString(originalArr));
 
         //Calling the method to reverse the array which was created with the size of n (custom)
-        reverseArray(originalArr, n);
+        reverseArray(originalArr, 0);
         long time = System.nanoTime();
         time = System.nanoTime() - time;
 
@@ -60,7 +54,14 @@ public class ReverseArray_InPlace {
 
 }
 //Result:
-//n = 500 -> time = 300 ns
-//n = 1500 -> time = 300 ns
-//n = 2500 -> time = 200 ns
-//n = 10000 -> time = 200 ns
+//n = 500 -> Steps: 250 -> time = 200 ns
+//n = 1500 -> Steps: 750 -> time = 200 ns
+//n = 2500 -> Steps: 1250 -> time = 300 ns
+//n = 3500 -> Steps: 1750 -> time = 300 ns
+//n = 4500 -> Steps: 2250 -> time = 300 ns
+//n = 5500 -> Steps: 2750 -> time = 300 ns
+//n = 6500 -> Steps: 3250 -> time = 700 ns
+//n = 7500 -> Steps: 3750 -> time = 400 ns
+//n = 8500 -> Steps: 4250 -> time = 300 ns
+//n = 9500 -> Steps: 4750 -> time = 800 ns
+//n = 10500 -> Steps: 5250 ->time = 500 ns
