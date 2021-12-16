@@ -30,9 +30,9 @@ public class ReverseArray_InPlace {
             //instead assign a value which is store in a temporary placeholder. Operation complete.
             arr[n - i - 1] = temp;
             //increment the count (will always be equal to 1)
-            count++;
+        //    count++;
             //Print the total length of the array (axis x) and count taken to perform this step (axis y)
-            System.out.printf("(" + n + "," + count + ("),\n"));
+         //   System.out.printf("(" + n + "," + count + ("),\n"));
         }
 
         //print the same array after reversal
@@ -42,7 +42,7 @@ public class ReverseArray_InPlace {
 
     public static void main(String[] args) {
         //this is a code to generate integer values for the array of size n (custom).
-        int n = 20;
+        int n = 1500;
 
         Random random = new Random();
 
@@ -52,7 +52,15 @@ public class ReverseArray_InPlace {
 
         //Calling the method to reverse the array which was created with the size of n (custom)
         reverseArray(originalArr, n);
+        long time = System.nanoTime();
+        time = System.nanoTime() - time;
 
+        System.out.printf("n = %d -> time = %d ns%n", n, time);
     }
 
 }
+//Result:
+//n = 500 -> time = 300 ns
+//n = 1500 -> time = 300 ns
+//n = 2500 -> time = 200 ns
+//n = 10000 -> time = 200 ns
