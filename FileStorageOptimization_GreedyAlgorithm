@@ -1,0 +1,73 @@
+package coding;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
+public class GreedyAlgorithm_Optimization_StoreFilesOnDisks {
+
+// Design a greedy algorithm using pseudocode that solves this optimization problem of
+// transferring files to disk while minimizing unused storage.
+// The inputs to this algorithm are the number of files n,
+// corresponding sizes (in MBs) s1, ... sn,
+// m the number of disks,
+// and corresponding storages amounts t1, ..., tm.
+// The algorithm should return an array map[i]
+// which contains the disk index of which the ith media file should be stored.
+
+    static ArrayList<Integer> fileStorage_Optimization(Integer arrayWithFileSizeMBs[], int numberOfDisks, int storageAmountOnDisk, int totalNumberofDisks) {
+        // Sort files in descending order
+        Arrays.sort(arrayWithFileSizeMBs, Collections.reverseOrder());
+
+        //This is where we add result: disk indexes of which the ith media file should be stored
+        ArrayList<Integer> result = new ArrayList<>();
+
+        // Create an array to store available Disks with sizes
+        int[] remainingStorageOnDisk = new int[numberOfDisks];
+        for (int i = 0; i < numberOfDisks; i++) {
+            remainingStorageOnDisk[i] = storageAmountOnDisk;
+        }
+
+        // get each file and insert into available space.
+        for (int i = 0; i < arrayWithFileSizeMBs.length; i++) {
+
+            // get the first Disk that have space to put the file
+            // sizeMBs[i]
+            int j;
+            for (j = 0; j < totalNumberofDisks; j++) {
+                //if there is enough space on Disk, store the File, update Disk space and take a disc index to the result array
+                if (remainingStorageOnDisk[j] >= arrayWithFileSizeMBs[i]) {
+                    remainingStorageOnDisk[j] = remainingStorageOnDisk[j] - arrayWithFileSizeMBs[i];
+                    result.add(j);
+                    break;
+                }
+                //If there is not enough space on the current j index, continue with next available disks
+                if (remainingStorageOnDisk[j] < arrayWithFileSizeMBs[i]) {
+                    continue;
+                }
+            }
+
+            //if all disks have been scanned and no space, print a message:File size is too large for the available disk spaces
+            if (j == totalNumberofDisks) {
+                System.out.println("File is too large for the available disks space. File size: " + arrayWithFileSizeMBs[i] + " , Max.Disk Capacity: " + storageAmountOnDisk);
+            }
+        }
+        //return result
+        return result;
+    }
+
+
+    // Driver code
+    public static void main(String[] args) {
+        Integer arrayWithFileSizeMBs[] = {17, 2, 7, 6, 8, 89};
+        //number of available disks
+        int numberOfDisks = 14;
+        // storage on the disks
+        int storageAmountOnDisk = 10;
+
+        ArrayList<Integer> result = fileStorage_Optimization(arrayWithFileSizeMBs, numberOfDisks, storageAmountOnDisk, numberOfDisks);
+        System.out.println("Disk Indexes of which the ith media file should be stored:" + result);
+    }
+}
+
+
