@@ -1,0 +1,72 @@
+package coding;
+
+public class CompareTwoDArrays_findDistance {
+
+    public static int compareImages(int[][] x, int[][] y, int thresh) {
+        //aggregate the difference when complete into variable totalDifference
+        int totalDifference = 0;
+        int[][] D = new int[][]{};
+
+        //if sizes of the 2 arrays is different and the difference is more than thresh value, images are not equal. No need to proceed any further.
+        //Scenario 1: if images are different (one is larger that the other)
+        if (x.length > y.length && x.length - y.length > thresh) {
+            System.out.println("Images are not equal");
+            totalDifference += x.length - y.length;
+        }
+        if (y.length > x.length && y.length - x.length > thresh) {
+            System.out.println("Images are not equal");
+            totalDifference += y.length - x.length;
+        }
+        // iterate through each element of both arrays and compare. If different, increase the totalDifference by 1. it has three more scenarios.
+        for (int i = 0; i < x.length; i++) {
+            int j = 0;
+            //Scenario 2: if sizes of the 2 subarrays are equal (same number of elements)
+            if (x[i].length == y[i].length) {
+                for (; j < x[i].length; j++) {
+                    totalDifference += compareElements(x, y, i, j);
+                }
+            }
+            //Scenario 3: if sizes of the 2 subarrays are not equal (x array in posision i has more elements that y array in the same position)
+            if (x[i].length > y[i].length) {
+                for (; j < y[i].length; j++) {
+                    totalDifference += compareElements(x, y, i, j);
+                }
+                //add the remaining number of elements -difference in subarrays sizes: Scenario 3
+                totalDifference += x[i].length - y[i].length;
+            }
+            //   Scenario 4: if sizes of the 2 subarrays are not equal (y array in posision i has more elements that x array in the same position)
+            if (y[i].length > x[i].length) {
+                for (; j < x[i].length; j++) {
+                    totalDifference += compareElements(x, y, i, j);
+                }
+                //add the remaining number of elements -difference in subarrays sizes: Scenario 4
+                totalDifference += y[i].length - x[i].length;
+            }
+        }
+        return totalDifference;
+    }
+
+    //Compare the elements between two arrays and return 1 if they are different
+    public static int compareElements(int[][] x, int[][] y, int i, int j) {
+        int minVal = 0;
+        if ((x[i][j] == 0 && y[i][j] == 1) || (x[i][j] == 1 && y[i][j] == 0))
+            minVal++;
+        return minVal;
+    }
+
+    public static void main(String[] args) {
+        int[][] x = {{0, 1, 1, 0}, {1, 0, 0, 0, 1}};
+        int[][] y = {{0, 1, 1}, {1, 1, 1, 0}};
+        int thresh = 1;
+
+        int discrepanciesCount = compareImages(x, y, thresh);
+
+//Check if the thresh is more that the number of found discrepancies.
+        if (discrepanciesCount > thresh) {
+            System.out.printf("Images are not equal. \nThresh: " + thresh + ". DiscrepanciesCount found: " + discrepanciesCount);
+        } else {
+            System.out.printf("Images are equal. \nThresh: " + thresh + ". DiscrepanciesCount found: " + discrepanciesCount);
+        }
+    }
+}
+
